@@ -12,4 +12,6 @@ export const Colors = {
   tabIconDefault: "#D4D6DD",
   tabIconSelected: primaryColor,
   cardBackground: "#F8F9FE",
+  lightTint: "rgba(206, 22,148, 0.1)",
+  greyBackground: "#FAFAFA",
 };
