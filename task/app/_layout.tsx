@@ -26,11 +26,12 @@ export default function RootLayout() {
   }
 
   return (
-      <GluestackUIProvider config={config}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </GluestackUIProvider>
+    <GluestackUIProvider config={config}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="connection/[id]" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+    </GluestackUIProvider>
   );
 }

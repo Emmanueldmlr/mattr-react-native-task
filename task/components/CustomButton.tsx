@@ -15,7 +15,7 @@ const CustomButton = ({
       borderWidth={1.5}
       borderColor={Colors.tint}
       variant="outline"
-      onPress={() => {}}
+      onPress={onPress}
       marginTop="$4"
     >
       <Text fontSize="$xs" fontWeight="$semibold" color={Colors.tint}>

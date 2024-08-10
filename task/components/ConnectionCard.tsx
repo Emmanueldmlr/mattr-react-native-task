@@ -1,9 +1,11 @@
-import { Colors } from '@/constants/Colors';
-import { Badge, BadgeText, Box, Image, Text, View } from '@gluestack-ui/themed';
-import React from 'react'
-import CustomButton from './CustomButton';
+import { Colors } from "@/constants/Colors";
+import { Badge, BadgeText, Box, Image, Text, View } from "@gluestack-ui/themed";
+import { useRouter } from "expo-router";
+import React from "react";
+import CustomButton from "./CustomButton";
 
 const ConnectionCard = () => {
+  const router = useRouter();
   return (
     <Box mt="$4">
       <Box>
@@ -52,11 +54,19 @@ const ConnectionCard = () => {
           London, United Kingdom
         </Text>
         <View mt="$2">
-          <CustomButton title="Connect" onPress={() => {}} />
+          <CustomButton
+            title="Connect"
+            onPress={() =>
+              router.push({
+                pathname: "/connection/[id]",
+                params: { id: "1" },
+              })
+            }
+          />
         </View>
       </Box>
     </Box>
   );
-}
+};
 
-export default ConnectionCard
+export default ConnectionCard;

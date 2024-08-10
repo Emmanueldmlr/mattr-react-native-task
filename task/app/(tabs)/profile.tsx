@@ -1,10 +1,10 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { View, Text } from '@gluestack-ui/themed';
+import UserView from '@/components/user';
+import { View } from '@gluestack-ui/themed';
 
 const Profile = () => {
   return (
-    <View >
-      <Text>Profile</Text>
+    <View flex={1}>
+      <UserView showFavIcon={false} user={{}} />
     </View>
   );
 }
