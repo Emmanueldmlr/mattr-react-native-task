@@ -39,7 +39,7 @@ export const ConnectionProvider = ({ children }: { children: ReactNode }) => {
     gender: string;
   }) => {
     let filtered = filterConnections({
-      connections: allConnections,
+      connections,
       sortBy,
       ageRange,
       gender,
