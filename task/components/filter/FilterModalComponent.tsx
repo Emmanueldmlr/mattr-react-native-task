@@ -1,7 +1,12 @@
 import { Colors } from "@/constants/Colors";
+import {
+  AGE_RANGE,
+  AGE_RANGE_ENUM,
+  GENDER,
+  GENDER_ENUM,
+  SORT_TYPE_ENUM,
+} from "@/constants/FilterData";
 import { useConnections } from "@/contexts/ConnectionContext";
-import { Ionicons } from "@expo/vector-icons";
-import { SelectIcon, SelectInput } from "@gluestack-ui/themed";
 import {
   View,
   Text,
@@ -14,29 +19,28 @@ import React, { useState } from "react";
 import FilterListComponent from "./FilterListComponent";
 import SelectComponent from "./SelectComponent";
 
-const genders = ["MALE", "FEMALE"];
-const ageRanges = ["20 - 24", "25 - 30", "30 - 40", "40+"];
-
 const FilterComponent = ({ closeHandler }: { closeHandler: () => void }) => {
-  const [selectedGender, setSelectedGender] = useState("FEMALE");
-  const [selectedAgeRange, setSelectedAgeRange] = useState("25 - 30");
-  const [sortType, setSortType] = React.useState("Score");
-  const {applyFilters} = useConnections()
+  const [selectedGender, setSelectedGender] = useState(GENDER_ENUM.male);
+  const [selectedAgeRange, setSelectedAgeRange] = useState(
+    AGE_RANGE_ENUM.twentyFiveToThirty
+  );
+  const [sortType, setSortType] = React.useState(SORT_TYPE_ENUM.score);
+  const { applyFilters } = useConnections();
 
   const resetFilters = () => {
     setSelectedGender("");
     setSelectedAgeRange("");
-    setSortType("Score");
-  }
+    setSortType(SORT_TYPE_ENUM.score);
+  };
 
   const filterConnections = () => {
     applyFilters({
-       sortBy: sortType,
-       ageRange: selectedAgeRange,
-       gender: selectedGender
-    })
-    closeHandler()
-  }
+      sortBy: sortType,
+      ageRange: selectedAgeRange,
+      gender: selectedGender,
+    });
+    closeHandler();
+  };
 
   return (
     <VStack
@@ -49,7 +53,7 @@ const FilterComponent = ({ closeHandler }: { closeHandler: () => void }) => {
       <View>
         <HStack justifyContent="space-between">
           <Pressable onPress={closeHandler}>
-            <Text fontSize="$sm" fontWeight="$bold" color={Colors.tint}>
+            <Text fontSize="$sm" fontWeight="$bold" color={Colors.primary}>
               Cancel
             </Text>
           </Pressable>
@@ -57,7 +61,7 @@ const FilterComponent = ({ closeHandler }: { closeHandler: () => void }) => {
             Filter
           </Text>
           <Pressable onPress={resetFilters}>
-            <Text fontSize="$sm" fontWeight="$bold" color={Colors.tint}>
+            <Text fontSize="$sm" fontWeight="$bold" color={Colors.primary}>
               Clear All
             </Text>
           </Pressable>
@@ -65,14 +69,14 @@ const FilterComponent = ({ closeHandler }: { closeHandler: () => void }) => {
         <View p="$2" mt="$6">
           <FilterListComponent
             title="Gender"
-            data={genders}
+            data={GENDER}
             hasTopBorder={true}
             selectedItem={selectedGender}
             setSelectedItem={setSelectedGender}
           />
           <FilterListComponent
             title="Age Ranges"
-            data={ageRanges}
+            data={AGE_RANGE}
             hasTopBorder={false}
             selectedItem={selectedAgeRange}
             setSelectedItem={setSelectedAgeRange}
@@ -88,7 +92,7 @@ const FilterComponent = ({ closeHandler }: { closeHandler: () => void }) => {
 
       <Button
         rounded="$xl"
-        backgroundColor={Colors.tint}
+        backgroundColor={Colors.primary}
         onPress={filterConnections}
         my="$4"
       >

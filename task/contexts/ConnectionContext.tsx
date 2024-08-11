@@ -9,23 +9,12 @@ import React, {
 import { User } from "@/types/UserType";
 import { FetchConnections } from "@/services/ConnectionService";
 import { CONNECTION_LIMIT } from "@/constants/ConnectionData";
-import { shuffleConnections } from "@/utils/connectionUtils";
+import { parseAgeRange, shuffleConnections, tagTopConnectionAsBestMatch } from "@/utils/connectionUtils";
 import { calculateAgeFromDOB } from "@/utils/dateUtils";
+import { ConnectionContextType } from "@/types/ConnectionContextTypes";
 
-const ConnectionContext = createContext<{
-  connections: User[] | null;
-  isLoading: boolean;
-  refreshConnections: () => void;
-  getConnection: (id: number) => User | undefined;
-  toggleConnectionLike: (id: number) => void;
-  applyFilters: (filters: {
-    sortBy: string;
-    ageRange: string;
-    gender: string;
-  }) => void;
-
-}>({
-  connections: null,
+const ConnectionContext = createContext<ConnectionContextType>({
+  connections: [],
   isLoading: false,
   refreshConnections: () => {},
   getConnection: () => undefined,
@@ -35,11 +24,11 @@ const ConnectionContext = createContext<{
 
 export const ConnectionProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [connections, setConnections] = useState<User[] | null>(null);
-  const [allConnections, setAllConnections] = useState<User[] | null>(null);
+  const [connections, setConnections] = useState<User[]>([]);
+  const [allConnections, setAllConnections] = useState<User[]>([]);
 
   const getConnection = (id: number) => {
-    return connections?.find((connection) => connection.id === id);
+    return connections.find((connection) => connection.id === id);
   };
 
   const applyFilters = ({
@@ -49,26 +38,15 @@ export const ConnectionProvider = ({ children }: { children: ReactNode }) => {
     ageRange: string;
     gender: string;
   }) => {
-    // Apply filters here
     let filtered = connections;
-
-    if (!filtered) return;
-
     if (gender) {
       filtered = filtered.filter(
         (conn) => conn.gender.toLocaleLowerCase() === gender.toLocaleLowerCase()
       );
     }
 
-    const parseAgeRange = (range: string) => {
-      if (range == "40+") return { min: 40, max: 150 };
-      const [min, max] = range.split(" - ").map(Number);
-      return { min, max };
-    };
-
     if (ageRange) {
       const { min, max } = parseAgeRange(ageRange);
-
       filtered = filtered.filter((conn) => {
         const age = calculateAgeFromDOB(conn.dob);
         return age >= min && age <= max;
@@ -85,21 +63,10 @@ export const ConnectionProvider = ({ children }: { children: ReactNode }) => {
       }
     });
 
-    // Flagging the best match
-    if (filtered.length > 0) {
-      filtered[0].bestMatch = true; // Mark the first element as the best match
-    }
-
-    // Optionally, reset the bestMatch flag for all other connections
-    filtered.forEach((user, index) => {
-      if (index > 0) user.bestMatch = false;
-    });
-
-    setConnections(filtered);
+    setConnections(tagTopConnectionAsBestMatch(filtered));
   }
 
   const toggleConnectionLike = (id: number) => {
-    if (!connections) return;
     const updatedConnections = connections.map((connection) => {
       if (connection.id === id) {
         return { ...connection, isLiked: !connection.isLiked };
@@ -111,7 +78,7 @@ export const ConnectionProvider = ({ children }: { children: ReactNode }) => {
 
   const getConnections = useCallback(async () => {
     //check if all connections are already fetched
-    if (allConnections?.length) {
+    if (allConnections.length) {
       return;
     }
     setIsLoading(true);
@@ -129,7 +96,7 @@ export const ConnectionProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const refreshConnections = useCallback(() => {
-    if (allConnections?.length) {
+    if (allConnections.length > 0) {
       setIsLoading(true);
       setConnections(
         shuffleConnections([...allConnections]).slice(0, CONNECTION_LIMIT)

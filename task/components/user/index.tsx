@@ -8,18 +8,15 @@ import { useRouter } from "expo-router";
 import { User } from "@/types/UserType";
 import LoadingStateComponent from "../LoadingStateComponent";
 import EmptyStateComponent from "../EmptyStateComponent";
-import { getPhotosPath } from "@/utils/userPhotosUtils";
-import { calculateAgeFromDOB } from "@/utils/dateUtils";
+import { getPhotosPaths } from "@/utils/userPhotosUtils";
 
-const UserView = ({
-  user,
-  showFavIcon,
-  isDataLoading,
-}: {
+type UserViewProps = {
   user: User | null | undefined;
   showFavIcon: boolean;
   isDataLoading: boolean;
-}) => {
+};
+
+const UserView = ({ user, showFavIcon, isDataLoading }: UserViewProps) => {
   const router = useRouter();
 
   if (isDataLoading) {
@@ -27,24 +24,23 @@ const UserView = ({
   }
 
   if (!user) {
-    return <EmptyStateComponent message="No user found" />;
+    return (
+      <EmptyStateComponent
+        buttonTitle="Go Back"
+        buttonHandler={() => router.back()}
+        message="No user found"
+      />
+    );
   }
+
   return (
     <View>
       <CarouselComponent
-        carouselData={getPhotosPath(user.photos)}
+        carouselData={getPhotosPaths(user.photos)}
         navigationHandler={() => router.back()}
       />
       <View paddingHorizontal="$4" mt="$6">
-        <UserDetails
-          hasLike={showFavIcon}
-          name={user.first_name + " " + user.last_name}
-          age={calculateAgeFromDOB(user.dob)}
-          location={user.location.city + ", " + user.location.country}
-          bio={user.bio}
-          likeStatus={user.isLiked}
-          connectionId={user.id}
-        />
+        <UserDetails hasLike={showFavIcon} user={user} />
         <View mt="$6">
           <Text fontSize="$sm" fontWeight="$bold" color={Colors.text}>
             Interests

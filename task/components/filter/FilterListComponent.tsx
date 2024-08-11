@@ -3,19 +3,21 @@ import { Button, Text } from "@gluestack-ui/themed";
 import { View } from "@gluestack-ui/themed";
 import React from "react";
 
+type FilterListComponentProps = {
+  data: string[];
+  hasTopBorder: boolean;
+  selectedItem: string;
+  setSelectedItem: (item: string) => void;
+  title: string;
+};
+
 const FilterListComponent = ({
   data,
   hasTopBorder,
   selectedItem,
   setSelectedItem,
   title,
-}: {
-  data: string[];
-  hasTopBorder: boolean;
-  selectedItem: string;
-  setSelectedItem: (item: string) => void;
-  title: string;
-}) => {
+}: FilterListComponentProps) => {
   const renderButton = (
     label: string,
     selected: boolean,
@@ -23,7 +25,9 @@ const FilterListComponent = ({
   ) => (
     <Button
       onPress={onPress}
-      backgroundColor={selected ? Colors.tint : Colors.lightTint}
+      backgroundColor={
+        selected ? Colors.primary : Colors.light
+      }
       rounded="$xl"
       mr="$2"
       my="$2"
@@ -31,7 +35,7 @@ const FilterListComponent = ({
       key={label}
     >
       <Text
-        color={selected ? "white" : Colors.tint}
+        color={selected ? "white" : Colors.primary}
         fontWeight="bold"
         fontSize="$xs"
       >
@@ -39,12 +43,13 @@ const FilterListComponent = ({
       </Text>
     </Button>
   );
+
   return (
     <View
       mb="$4"
       borderTopWidth={hasTopBorder ? "$1" : "$0"}
       borderBottomWidth="$1"
-      borderColor={Colors.tabIconDefault}
+      borderColor={Colors.default}
       py={hasTopBorder ? "$4" : "$0"}
       pb="$4"
     >
@@ -53,7 +58,7 @@ const FilterListComponent = ({
       </Text>
       <View flexDirection="row" mt="$4">
         {data.map((item) =>
-        //add key prop to the Button component
+          //add key prop to the Button component
           renderButton(item, selectedItem === item, () => setSelectedItem(item))
         )}
       </View>

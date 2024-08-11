@@ -19,16 +19,18 @@ const ConnectionScreen = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const connection = getConnection(parseInt(id as string))
+    // Fetch connection data
+    const connection = getConnection(parseInt(id as string)) // Type casting to integer
     setConnection(connection)
     setLoading(false)
   }
   , [id, getConnection])
+
   if (loading) {
-    <LoadingStateComponent message="Loading user data..." />
+    <LoadingStateComponent message="Loading Connection data..." />
   }
   if (!connection) {
-    <EmptyStateComponent message="No user found" buttonTitle="Go Back" buttonHandler={() => router.back()} />
+    <EmptyStateComponent message="No Connection found" buttonTitle="Go Back" buttonHandler={() => router.back()} />
   }
   return (
     <View flex={1}>

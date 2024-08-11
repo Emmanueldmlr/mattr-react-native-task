@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  Text,
-  VStack,
-  View,
-  Image,
-  Badge,
-  BadgeText,
-} from "@gluestack-ui/themed";
+import { Box, Text, VStack, View } from "@gluestack-ui/themed";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/Colors";
 import CustomButton from "@/components/CustomButton";
@@ -23,18 +14,28 @@ import EmptyStateComponent from "@/components/EmptyStateComponent";
 const Home = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["100%"], []);
-  const {connections, isLoading, refreshConnections} = useConnections()
+  const { connections, isLoading, refreshConnections } = useConnections();
   if (isLoading) {
-    return <LoadingStateComponent message="Loading connections..." />
+    return <LoadingStateComponent message="Loading connections..." />;
   }
   if (!connections || !connections.length) {
-    return <EmptyStateComponent message="No connections found" buttonTitle="Refresh" buttonHandler={refreshConnections} />
+    return (
+      <EmptyStateComponent
+        message="No connections found"
+        buttonTitle="Refresh"
+        buttonHandler={refreshConnections}
+      />
+    );
   }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack paddingHorizontal="$7">
         <Pressable onPress={() => bottomSheetRef.current?.expand()}>
-          <Text textAlign="right" color={Colors.tint} fontWeight="$semibold">
+          <Text
+            textAlign="right"
+            color={Colors.primary}
+            fontWeight="$semibold"
+          >
             Filter
           </Text>
         </Pressable>
@@ -52,11 +53,9 @@ const Home = () => {
             height: "90%", // This is to ensure the last card is fully visible
           }}
         >
-          {
-            connections.map((connection, index) => (
-              <ConnectionCard key={index} connection={connection} />
-            ))
-          }
+          {connections.map((connection, index) => (
+            <ConnectionCard key={index} connection={connection} />
+          ))}
         </ScrollView>
         <BottomSheet ref={bottomSheetRef} index={-1} snapPoints={snapPoints}>
           <FilterModalComponent
