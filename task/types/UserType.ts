@@ -9,6 +9,9 @@ export interface User {
   dob: string;
   photos: PhotoType[];
   interests: InterestsType[];
+  isLiked?: boolean;
+  bestMatch?: boolean;
+  created_at: string;
 }
 
 type LocationType = {

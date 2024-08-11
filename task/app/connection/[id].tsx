@@ -7,7 +7,7 @@ import { useConnections } from "@/contexts/ConnectionContext";
 import { User } from "@/types/UserType";
 import LoadingStateComponent from "@/components/LoadingStateComponent";
 import EmptyStateComponent from "@/components/EmptyStateComponent";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 
 
@@ -16,18 +16,19 @@ const ConnectionScreen = () => {
   const [loading, setLoading] = React.useState(true)
   const [connection, setConnection] = React.useState<User | undefined | null>()
   const {id} = useLocalSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     const connection = getConnection(parseInt(id as string))
     setConnection(connection)
     setLoading(false)
   }
-  , [id])
+  , [id, getConnection])
   if (loading) {
     <LoadingStateComponent message="Loading user data..." />
   }
   if (!connection) {
-    <EmptyStateComponent message="No user found" />
+    <EmptyStateComponent message="No user found" buttonTitle="Go Back" buttonHandler={() => router.back()} />
   }
   return (
     <View flex={1}>

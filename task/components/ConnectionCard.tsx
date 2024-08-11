@@ -21,22 +21,24 @@ const ConnectionCard = ({ connection }: { connection: User }) => {
           height={237}
           alt="user image"
         />
-        <Badge
-          size="md"
-          variant="solid"
-          borderRadius="$2xl"
-          action="success"
-          position="absolute"
-          top="$2"
-          right="$2"
-          px="$4"
-          py="$1"
-          bgColor={Colors.tint}
-        >
-          <BadgeText fontSize="$xs" fontWeight="bold" color="$white">
-            TOP MATCH
-          </BadgeText>
-        </Badge>
+        {connection.bestMatch && (
+          <Badge
+            size="md"
+            variant="solid"
+            borderRadius="$2xl"
+            action="success"
+            position="absolute"
+            top="$2"
+            right="$2"
+            px="$4"
+            py="$1"
+            bgColor={Colors.tint}
+          >
+            <BadgeText fontSize="$xs" fontWeight="bold" color="$white">
+              TOP MATCH
+            </BadgeText>
+          </Badge>
+        )}
       </Box>
       <Box
         p="$4"

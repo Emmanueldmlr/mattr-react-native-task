@@ -28,7 +28,7 @@ const Home = () => {
     return <LoadingStateComponent message="Loading connections..." />
   }
   if (!connections || !connections.length) {
-    return <EmptyStateComponent message="No connections found" />
+    return <EmptyStateComponent message="No connections found" buttonTitle="Refresh" buttonHandler={refreshConnections} />
   }
   return (
     <SafeAreaView style={{ flex: 1 }}>

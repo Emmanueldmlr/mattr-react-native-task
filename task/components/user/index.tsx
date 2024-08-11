@@ -21,6 +21,7 @@ const UserView = ({
   isDataLoading: boolean;
 }) => {
   const router = useRouter();
+
   if (isDataLoading) {
     return <LoadingStateComponent message="Loading user data..." />;
   }
@@ -41,6 +42,8 @@ const UserView = ({
           age={calculateAgeFromDOB(user.dob)}
           location={user.location.city + ", " + user.location.country}
           bio={user.bio}
+          likeStatus={user.isLiked}
+          connectionId={user.id}
         />
         <View mt="$6">
           <Text fontSize="$sm" fontWeight="$bold" color={Colors.text}>
