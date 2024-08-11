@@ -9,8 +9,7 @@ import React, {
 import { User } from "@/types/UserType";
 import { FetchConnections } from "@/services/ConnectionService";
 import { CONNECTION_LIMIT } from "@/constants/ConnectionData";
-import { filterConnections, parseAgeRange, shuffleConnections, tagTopConnectionAsBestMatch } from "@/utils/connectionUtils";
-import { calculateAgeFromDOB } from "@/utils/dateUtils";
+import { filterConnections, shuffleConnections, tagTopConnectionAsBestMatch } from "@/utils/connectionUtils";
 import { ConnectionContextType } from "@/types/ConnectionContextTypes";
 
 const ConnectionContext = createContext<ConnectionContextType>({
