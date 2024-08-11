@@ -9,7 +9,7 @@ import React, {
 import { User } from "@/types/UserType";
 import { FetchConnections } from "@/services/ConnectionService";
 import { CONNECTION_LIMIT } from "@/constants/ConnectionData";
-import { parseAgeRange, shuffleConnections, tagTopConnectionAsBestMatch } from "@/utils/connectionUtils";
+import { filterConnections, parseAgeRange, shuffleConnections, tagTopConnectionAsBestMatch } from "@/utils/connectionUtils";
 import { calculateAgeFromDOB } from "@/utils/dateUtils";
 import { ConnectionContextType } from "@/types/ConnectionContextTypes";
 
@@ -38,31 +38,12 @@ export const ConnectionProvider = ({ children }: { children: ReactNode }) => {
     ageRange: string;
     gender: string;
   }) => {
-    let filtered = connections;
-    if (gender) {
-      filtered = filtered.filter(
-        (conn) => conn.gender.toLocaleLowerCase() === gender.toLocaleLowerCase()
-      );
-    }
-
-    if (ageRange) {
-      const { min, max } = parseAgeRange(ageRange);
-      filtered = filtered.filter((conn) => {
-        const age = calculateAgeFromDOB(conn.dob);
-        return age >= min && age <= max;
-      });
-    }
-
-    filtered.sort((a, b) => {
-      if (sortBy === "Score") {
-        return b.score - a.score;
-      } else {
-        return (
-          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-        );
-      }
+    let filtered = filterConnections({
+      connections: allConnections,
+      sortBy,
+      ageRange,
+      gender,
     });
-
     setConnections(tagTopConnectionAsBestMatch(filtered));
   }
 
