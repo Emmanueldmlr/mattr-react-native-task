@@ -14,7 +14,7 @@ const Interest = ({ interest }: { interest: InterestsType[] }) => {
           action="success"
           px="$4"
           py="$1"
-          bgColor={Colors.tint}
+          bgColor={Colors.primary}
           key={index}
         >
           <BadgeText fontSize="$xs" fontWeight="semibold" color="$white">

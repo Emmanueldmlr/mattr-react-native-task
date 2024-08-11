@@ -1,24 +1,25 @@
-import { Ionicons } from '@expo/vector-icons';
-import { Image, Pressable, View } from '@gluestack-ui/themed';
-import React from 'react'
-import { Dimensions } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
-import Carousel from 'react-native-reanimated-carousel';
-import PaginationItem from './PaginationItem';
+import { Ionicons } from "@expo/vector-icons";
+import { Image, Pressable, View } from "@gluestack-ui/themed";
+import React from "react";
+import { Dimensions } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
+import Carousel from "react-native-reanimated-carousel";
+import PaginationItem from "./PaginationItem";
+
+type CarouselComponentProps = {
+  carouselData: string[];
+  navigationHandler: () => void;
+};
 
 const CarouselComponent = ({
   carouselData,
-  navigationHandler
-}: {
-  carouselData: string[];
-    navigationHandler: () => void;
-}) => {
+  navigationHandler,
+}: CarouselComponentProps) => {
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;
-   const progress = useSharedValue<number>(0);
+  const progress = useSharedValue<number>(0);
   return (
-    <View
-     style={{ position: "relative", width, height: height / 2 }}>
+    <View position="relative" width={width} height={height / 2}>
       <Carousel
         loop
         width={width}
@@ -30,22 +31,14 @@ const CarouselComponent = ({
           (progress.value = absoluteProgress)
         }
         renderItem={({ index }) => (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-            }}
-            key={index}
-          >
+          <View flex={1} justifyContent="center" key={index}>
             <Image
               source={{
                 uri: carouselData[index],
               }}
-              style={{
-                width,
-                height: height / 2,
-              }}
-              alt="user image"
+              width={width}
+              height={height / 2}
+              alt="Connection image"
             />
           </View>
         )}
@@ -60,15 +53,13 @@ const CarouselComponent = ({
       </Pressable>
       {!!progress && (
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            position: "absolute",
-            bottom: 10, // Position the pagination slightly above the bottom
-            left: 0,
-            right: 0,
-            alignItems: "center",
-          }}
+          flexDirection="row"
+          justifyContent="center"
+          position="absolute"
+          bottom="$2" // Position the pagination slightly above the bottom
+          left="$0"
+          right="$0"
+          alignItems="center"
         >
           {carouselData.map((_, index) => {
             return (
@@ -86,4 +77,4 @@ const CarouselComponent = ({
   );
 };
 
-export default CarouselComponent
+export default CarouselComponent;

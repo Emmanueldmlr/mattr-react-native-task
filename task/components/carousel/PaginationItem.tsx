@@ -1,4 +1,3 @@
-
 import { Colors } from "@/constants/Colors";
 import { View } from "@gluestack-ui/themed";
 import Animated, {
@@ -11,10 +10,8 @@ const PaginationItem: React.FC<{
   index: number;
   length: number;
   animValue: Animated.SharedValue<number>;
-}> = (props) => {
-  const { animValue, index, length } = props;
+}> = ({ animValue, index, length }) => {
   const width = 10;
-
   const animStyle = useAnimatedStyle(() => {
     let inputRange = [index - 1, index, index + 1];
     let outputRange = [-width, 0, width];
@@ -40,20 +37,20 @@ const PaginationItem: React.FC<{
 
   return (
     <View
+      backgroundColor={Colors.text}
+      width={8}
+      height={8}
+      borderRadius={50}
+      overflow="hidden"
       style={{
-        backgroundColor: Colors.text,
-        width: 8,
-        height: 8,
-        borderRadius: 50,
-        overflow: "hidden",
         transform: [
           {
             rotateZ: "0deg",
           },
         ],
-        marginHorizontal: 5,
-        marginBottom: 10,
       }}
+      marginHorizontal={5}
+      marginBottom={10}
     >
       <Animated.View
         style={[

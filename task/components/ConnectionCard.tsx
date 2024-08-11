@@ -32,7 +32,7 @@ const ConnectionCard = ({ connection }: { connection: User }) => {
             right="$2"
             px="$4"
             py="$1"
-            bgColor={Colors.tint}
+            bgColor={Colors.primary}
           >
             <BadgeText fontSize="$xs" fontWeight="bold" color="$white">
               TOP MATCH

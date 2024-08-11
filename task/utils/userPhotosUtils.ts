@@ -1,5 +1,5 @@
 import { PhotoType } from "@/types/UserType";
 
-export const getPhotosPath = (photos: PhotoType[]) => {
+export const getPhotosPaths = (photos: PhotoType[]) => {
     return photos.map((photo) => photo.path);
 }

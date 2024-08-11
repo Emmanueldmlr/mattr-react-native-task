@@ -11,17 +11,8 @@ import {
 } from "@gluestack-ui/themed";
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from "@expo/vector-icons";
+import { SORT_TYPE } from '@/constants/FilterData';
 
-const sortTypes = [
-  {
-    name: "Score",
-    value: "Score",
-  },
-  {
-    name: "Date Joined",
-    value: "Date Joined",
-  },
-];
 
 const SelectComponent = ({
     sortType,
@@ -36,7 +27,7 @@ const SelectComponent = ({
       onValueChange={(value) => setSortType(value)}
     >
       <SelectTrigger
-        borderColor={Colors.tabIconDefault}
+        borderColor={Colors.default}
         rounded="$xl"
         variant="outline"
         size="lg"
@@ -53,7 +44,7 @@ const SelectComponent = ({
           <Ionicons
             name="chevron-down"
             size={20}
-            color={Colors.tabIconDefault}
+            color={Colors.default}
             mr="$4"
           />
         </SelectIcon>
@@ -61,7 +52,7 @@ const SelectComponent = ({
       <SelectPortal>
         <SelectBackdrop />
         <SelectContent bg={Colors.greyBackground} py="$12">
-          {sortTypes.map((item) => (
+          {SORT_TYPE.map((item) => (
             <SelectItem
               key={item.value}
               rounded="$xl"
