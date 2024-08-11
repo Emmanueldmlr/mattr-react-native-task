@@ -16,7 +16,6 @@ import SelectComponent from "./SelectComponent";
 const genders = ["MALE", "FEMALE"];
 const ageRanges = ["20 - 24", "25 - 30", "30 - 40", "40+"];
 
-
 const FilterComponent = ({ closeHandler }: { closeHandler: () => void }) => {
   const [selectedGender, setSelectedGender] = useState("FEMALE");
   const [selectedAgeRange, setSelectedAgeRange] = useState("25 - 30");

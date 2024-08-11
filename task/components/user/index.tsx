@@ -5,43 +5,48 @@ import CarouselComponent from "@/components/carousel/CarouselComponent";
 import Interest from "@/components/user/InterestComponent";
 import UserDetails from "@/components/user/UserDetailsComponent";
 import { useRouter } from "expo-router";
-
-const colors = [
-  "#26292E",
-  "#899F9C",
-  "#B3C680",
-  "#5C6265",
-  "#F5D399",
-  "#F1F1F1",
-];
+import { User } from "@/types/UserType";
+import LoadingStateComponent from "../LoadingStateComponent";
+import EmptyStateComponent from "../EmptyStateComponent";
+import { getPhotosPath } from "@/utils/userPhotosUtils";
+import { calculateAgeFromDOB } from "@/utils/dateUtils";
 
 const UserView = ({
   user,
   showFavIcon,
+  isDataLoading,
 }: {
-  user: any;
+  user: User | null | undefined;
   showFavIcon: boolean;
+  isDataLoading: boolean;
 }) => {
   const router = useRouter();
+  if (isDataLoading) {
+    return <LoadingStateComponent message="Loading user data..." />;
+  }
+
+  if (!user) {
+    return <EmptyStateComponent message="No user found" />;
+  }
   return (
     <View>
       <CarouselComponent
-        carouselData={colors}
+        carouselData={getPhotosPath(user.photos)}
         navigationHandler={() => router.back()}
       />
       <View paddingHorizontal="$4" mt="$6">
         <UserDetails
-          hasLike
-          name="Frank Stark"
-          age={25}
-          location="San Francisco, CA"
-          bio="Hey, I'm Frank, a 23-year-old marketing enthusiast who loves outdoor adventures. Whether it's hiking or a cozy night in, I embrace every moment with enthusiasm. My infectious humor and love for deep conversations define me. I'm seeking a partner ready for genuine connections and new adventures. Connect with me and let's dive in!"
+          hasLike={showFavIcon}
+          name={user.first_name + " " + user.last_name}
+          age={calculateAgeFromDOB(user.dob)}
+          location={user.location.city + ", " + user.location.country}
+          bio={user.bio}
         />
         <View mt="$6">
           <Text fontSize="$sm" fontWeight="$bold" color={Colors.text}>
             Interests
           </Text>
-          <Interest interest={["Hiking", "Running", "Outdoors"]} />
+          <Interest interest={user.interests} />
         </View>
       </View>
     </View>

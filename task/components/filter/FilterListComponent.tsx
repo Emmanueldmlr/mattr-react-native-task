@@ -28,6 +28,7 @@ const FilterListComponent = ({
       mr="$2"
       my="$2"
       size="xs"
+      key={label}
     >
       <Text
         color={selected ? "white" : Colors.tint}
@@ -52,6 +53,7 @@ const FilterListComponent = ({
       </Text>
       <View flexDirection="row" mt="$4">
         {data.map((item) =>
+        //add key prop to the Button component
           renderButton(item, selectedItem === item, () => setSelectedItem(item))
         )}
       </View>

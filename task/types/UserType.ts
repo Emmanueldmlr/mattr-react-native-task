@@ -1,4 +1,4 @@
-interface User {
+export interface User {
   id: number;
   first_name: string;
   last_name: string;
@@ -16,12 +16,12 @@ type LocationType = {
   country: string;
 };
 
-type PhotoType = {
+export type PhotoType = {
   id: number;
   path: string;
 };
 
-type InterestsType = {
+export type InterestsType = {
   id: number;
   name: string;
 };
