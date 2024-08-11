@@ -1,12 +1,14 @@
-import UserView from '@/components/user';
-import { View } from '@gluestack-ui/themed';
+import UserView from "@/components/user";
+import useAuth from "@/hooks/useAuth";
+import { View } from "@gluestack-ui/themed";
 
 const Profile = () => {
+  const { user, loading } = useAuth();
   return (
     <View flex={1}>
-      <UserView showFavIcon={false} user={{}} />
+      <UserView isDataLoading={loading} showFavIcon={false} user={user} />
     </View>
   );
-}
+};
 
 export default Profile;

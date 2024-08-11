@@ -1,4 +1,5 @@
 import { Colors } from "@/constants/Colors";
+import { useConnections } from "@/contexts/ConnectionContext";
 import { Ionicons } from "@expo/vector-icons";
 import { SelectIcon, SelectInput } from "@gluestack-ui/themed";
 import {
@@ -16,11 +17,26 @@ import SelectComponent from "./SelectComponent";
 const genders = ["MALE", "FEMALE"];
 const ageRanges = ["20 - 24", "25 - 30", "30 - 40", "40+"];
 
-
 const FilterComponent = ({ closeHandler }: { closeHandler: () => void }) => {
   const [selectedGender, setSelectedGender] = useState("FEMALE");
   const [selectedAgeRange, setSelectedAgeRange] = useState("25 - 30");
   const [sortType, setSortType] = React.useState("Score");
+  const {applyFilters} = useConnections()
+
+  const resetFilters = () => {
+    setSelectedGender("");
+    setSelectedAgeRange("");
+    setSortType("Score");
+  }
+
+  const filterConnections = () => {
+    applyFilters({
+       sortBy: sortType,
+       ageRange: selectedAgeRange,
+       gender: selectedGender
+    })
+    closeHandler()
+  }
 
   return (
     <VStack
@@ -40,7 +56,7 @@ const FilterComponent = ({ closeHandler }: { closeHandler: () => void }) => {
           <Text fontSize="$md" fontWeight="$bold" color={Colors.text}>
             Filter
           </Text>
-          <Pressable onPress={closeHandler}>
+          <Pressable onPress={resetFilters}>
             <Text fontSize="$sm" fontWeight="$bold" color={Colors.tint}>
               Clear All
             </Text>
@@ -73,7 +89,7 @@ const FilterComponent = ({ closeHandler }: { closeHandler: () => void }) => {
       <Button
         rounded="$xl"
         backgroundColor={Colors.tint}
-        onPress={closeHandler}
+        onPress={filterConnections}
         my="$4"
       >
         <Text fontSize="$xs" fontWeight="$semibold" color="#fff">
