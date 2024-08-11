@@ -1,4 +1,5 @@
 import { User } from "@/types/UserType";
+import { calculateAgeFromDOB } from "./dateUtils";
 
 export const shuffleConnections = (connections: User[]) => {
   for (let startPoint = connections.length - 1; startPoint > 0; startPoint--) {
@@ -30,3 +31,42 @@ export const tagTopConnectionAsBestMatch = (connections: User[]) => {
 
   return connections;
 };
+
+
+export const filterConnections = ( {
+  connections,
+  sortBy,
+  ageRange,
+  gender
+}: {
+  connections: User[];
+  sortBy: string;
+  ageRange: string;
+  gender: string;
+}) => {
+  let filtered = [...connections];
+  if (gender) {
+    filtered = filtered.filter(
+      (conn) => conn.gender.toLocaleLowerCase() === gender.toLocaleLowerCase()
+    );
+  }
+
+  if (ageRange) {
+    const { min, max } = parseAgeRange(ageRange);
+    filtered = filtered.filter((conn) => {
+      const age = calculateAgeFromDOB(conn.dob);
+      return age >= min && age <= max;
+    });
+  }
+
+  filtered.sort((a, b) => {
+    if (sortBy === "Score") {
+      return b.score - a.score;
+    } else {
+      return (
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      );
+    }
+  });
+  return filtered;
+}
