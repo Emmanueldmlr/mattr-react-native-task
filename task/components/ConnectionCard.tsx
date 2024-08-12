@@ -60,7 +60,7 @@ const ConnectionCard = ({ connection }: { connection: User }) => {
         </Text>
         <View mt="$2">
           <CustomButton
-            title="Connect"
+            title="View Profile"
             onPress={() =>
               router.push({
                 pathname: "/connection/[id]",
